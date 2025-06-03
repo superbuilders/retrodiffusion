@@ -1,11 +1,21 @@
 # retrodiffusion-sdk
 
-A TypeScript/JavaScript SDK client for the [Retro Diffusion API](https://www.retrodiffusion.ai/) - Generate pixel art and retro-style images with AI.
+An unofficial TypeScript/JavaScript SDK client for the [Retro Diffusion API](https://www.retrodiffusion.ai/) - Generate pixel art and retro-style images with AI.
 
 ## Installation
 
 ```bash
-bun install
+# bun
+bun add @superbuilders/retrodiffusion
+
+# npm
+npm install @superbuilders/retrodiffusion
+
+# yarn
+yarn add @superbuilders/retrodiffusion
+
+# pnpm
+pnpm add @superbuilders/retrodiffusion
 ```
 
 ## Quick Start
@@ -14,7 +24,7 @@ bun install
 import { RetroDiffusionClient } from '@superbuilders/retrodiffusion'
 
 const client = new RetroDiffusionClient({
-    apiKey: 'your-api-key', // or set RD_TOKEN environment variable
+    apiKey: 'your-api-key', // or set RD_TOKEN or RD_API_KEY environment variable
 })
 
 // Generate a retro-style image
@@ -37,17 +47,9 @@ A complete vanilla HTML example with a beautiful UI:
 
 ```bash
 cd examples/basic
-bun install
-bun run dev
-# Open http://localhost:3000
+bun i
+bun dev
 ```
-
-Features:
-
-- Interactive web interface with Tailwind CSS
-- Import maps for module resolution
-- Real-time image generation
-- API key persistence
 
 See [`examples/basic/`](./examples/basic/) for the full implementation.
 
