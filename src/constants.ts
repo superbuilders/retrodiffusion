@@ -49,7 +49,7 @@ export const ANIMATION_STYLES = ['animation__four_angle_walking'] as const
 export const ALL_STYLES = [...RD_FAST_STYLES, ...RD_PLUS_STYLES, ...ANIMATION_STYLES] as const
 
 export const SUPPORTED_RESOLUTIONS = {
-    STANDARD: [128, 256, 512] as const,
+    STANDARD: [64, 128, 256, 512] as const,
     ANIMATION: [48] as const, // Animations only support 48x48
 } as const
 

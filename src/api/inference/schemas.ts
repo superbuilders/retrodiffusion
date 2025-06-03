@@ -52,7 +52,7 @@ export const InferenceRequestSchema = z.union([
 
 export const InferenceResponseSchema = ApiResponseSchema.extend({
     base64_images: z.array(z.string()),
-    type: z.enum(['txt2img', 'img2img', 'animation']),
+    model: z.enum(['rd_fast', 'rd_plus']),
 })
 
 export const DimensionValidationSchema = z

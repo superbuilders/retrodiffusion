@@ -24,7 +24,7 @@ export const mockResponses = {
         base64_images: [
             'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
         ],
-        type: 'txt2img' as const,
+        model: 'rd_fast',
     }),
 
     error401: () => ({
