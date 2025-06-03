@@ -2,7 +2,6 @@
     "name": "@superbuilders/retrodiffusion",
     "private": true,
     "type": "module",
-    "module": "src/index.ts",
     "exports": {
         ".": {
             "import": "./dist/index.js",
@@ -30,13 +29,20 @@
             "types": "./dist/api/common/index.d.ts"
         }
     },
+    "module": "src/index.ts",
     "scripts": {
         "build": "bun run clean && bun run types && bun build src/index.ts --outdir dist --target node",
         "clean": "bunx rimraf dist",
+        "coverage": "bun test --coverage",
         "format": "prettier --write .",
         "prepare": "husky",
         "sort": "bunx sort-package-json",
+        "test": "bun test",
+        "test:watch": "bun test --watch",
         "types": "tsc --emitDeclarationOnly --declaration --outDir dist"
+    },
+    "dependencies": {
+        "zod": "^3.25.49"
     },
     "devDependencies": {
         "@eslint/js": "^9.28.0",
@@ -50,8 +56,5 @@
     },
     "peerDependencies": {
         "typescript": "^5"
-    },
-    "dependencies": {
-        "zod": "^3.25.49"
     }
 }
