@@ -14,6 +14,16 @@
         "verbatimModuleSyntax": true,
         "noEmit": true,
 
+        // Path mapping
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"],
+            "@/api/*": ["src/api/*"],
+            "@/utils/*": ["src/utils/*"],
+            "@/constants": ["src/constants"],
+            "@/errors": ["src/errors"]
+        },
+
         // Best practices
         "strict": true,
         "skipLibCheck": true,
