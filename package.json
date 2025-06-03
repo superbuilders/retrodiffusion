@@ -1,6 +1,6 @@
 {
     "name": "@superbuilders/retrodiffusion",
-    "private": true,
+    "version": "0.1.0-beta.3",
     "type": "module",
     "exports": {
         ".": {
@@ -8,38 +8,26 @@
             "require": "./dist/index.cjs",
             "types": "./dist/index.d.ts"
         },
-        "./api": {
-            "import": "./dist/api/index.js",
-            "require": "./dist/api/index.cjs",
-            "types": "./dist/api/index.d.ts"
-        },
-        "./api/inference": {
-            "import": "./dist/api/inference/index.js",
-            "require": "./dist/api/inference/index.cjs",
-            "types": "./dist/api/inference/index.d.ts"
-        },
-        "./api/credits": {
-            "import": "./dist/api/credits/index.js",
-            "require": "./dist/api/credits/index.cjs",
-            "types": "./dist/api/credits/index.d.ts"
-        },
-        "./api/common": {
-            "import": "./dist/api/common/index.js",
-            "require": "./dist/api/common/index.cjs",
-            "types": "./dist/api/common/index.d.ts"
+        "./types": {
+            "types": "./dist/index.d.ts"
         }
     },
     "module": "src/index.ts",
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "bun run clean && bun run types && bun build src/index.ts --outdir dist --target node",
+        "bump": "SKIP_TESTS=1 bunx bumpp --no-tag --no-push",
         "clean": "bunx rimraf dist",
         "coverage": "bun test --coverage",
         "format": "prettier --write .",
         "prepare": "husky",
+        "pub": "bun run build && bun run sort && bun run bump && bun publish --access public",
         "sort": "bunx sort-package-json",
         "test": "bun test",
         "test:watch": "bun test --watch",
-        "types": "tsc --emitDeclarationOnly --declaration --outDir dist"
+        "types": "tsc --emitDeclarationOnly --declaration --outDir dist --project tsconfig.types.json"
     },
     "dependencies": {
         "zod": "^3.25.49"

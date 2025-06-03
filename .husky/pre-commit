@@ -1,3 +1,5 @@
+bun run sort
+
 bun install --frozen-lockfile || {
   echo "❌ bun.lock is out of sync. Please run 'bun install' and commit the changes."
   exit 1
