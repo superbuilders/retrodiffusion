@@ -1,0 +1,38 @@
+---
+description: When consuming a GitHub Issue, adhere to these guidelines
+globs: 
+alwaysApply: false
+---
+# Consuming GitHub Issues Guide
+
+This guide outlines the process for fetching and processing GitHub issues using the GitHub MCP tools.
+
+## Key Steps:
+
+1. **Fetch the Issue:** Use the GitHub MCP `get_issue` tool with the provided issue number to retrieve the full issue details from GitHub.
+
+2. **Provide a Brief Summary:** After fetching the issue, provide a concise summary that demonstrates understanding of:
+   - The issue title and main objective
+   - Key problem areas or requirements
+   - Any important technical details or constraints
+   - Current status and assignees (if any)
+   
+   **IMPORTANT:** Do NOT parrot back the entire issue content. A short, focused summary is sufficient to show you've understood the context.
+
+3. **Suggest Branch Name and Ask About Creation:** After summarizing, suggest an appropriate branch name based on the issue number and title (following GitHub conventions like `feature/issue-123-description` or `fix/issue-123-description`), then ask the user if they would like to create this branch. This should NOT be assumed - the user may just want you to read the issue for context without creating a branch. If the user says yes, use your cli to create the suggested branch following GitHub development workflows.
+
+## Example Workflow:
+
+```
+1. User provides GitHub issue number or URL (e.g., "#123" or "https://github.com/superbuilders/retrodiffusion/issues/123")
+2. Fetch issue using the GitHub MCP `get_issue` tool with issue_number 123
+3. Provide a summary like:
+   "I've fetched issue #123: 'Fix map rendering performance'. The issue describes performance problems with tile rendering in the game engine, specifically related to too many draw calls in the tiledLoader.ts file. The goal is to implement instanced rendering to reduce draw calls and improve scalability. Currently assigned to @developer and labeled as 'bug' and 'performance'."
+4. Suggest branch name and ask: "I suggest creating a branch named `fix/issue-123-map-rendering-performance`. Would you like me to create this branch for you?"
+```
+
+## Repository Information:
+
+- **Default Repository:** `superbuilders/retrodiffusion`
+- **Owner:** `superbuilders`
+- **Repo:** `retrodiffusion`
