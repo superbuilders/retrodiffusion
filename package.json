@@ -1,6 +1,26 @@
 {
     "name": "@superbuilders/retrodiffusion",
-    "version": "0.1.0-beta.3",
+    "version": "0.1.0-beta.5",
+    "description": "An unofficial TypeScript SDK for the Retrodiffusion API",
+    "keywords": [
+        "ai",
+        "image-generation",
+        "diffusion",
+        "api",
+        "sdk",
+        "typescript",
+        "retrodiffusion"
+    ],
+    "homepage": "https://github.com/superbuilders/retrodiffusion-sdk#readme",
+    "bugs": {
+        "url": "https://github.com/superbuilders/retrodiffusion-sdk/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/superbuilders/retrodiffusion-sdk.git"
+    },
+    "license": "MIT",
+    "author": "SuperBuilders",
     "type": "module",
     "exports": {
         ".": {
@@ -12,9 +32,12 @@
             "types": "./dist/index.d.ts"
         }
     },
-    "module": "src/index.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "README.md"
     ],
     "scripts": {
         "build": "bun run clean && bun run types && bun build src/index.ts --outdir dist --target node",

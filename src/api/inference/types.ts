@@ -1,3 +1,4 @@
+import { ALL_STYLES } from '@/constants'
 import { z } from 'zod'
 
 import {
@@ -6,19 +7,34 @@ import {
     ImageToImageRequestSchema,
     InferenceRequestSchema,
     InferenceResponseSchema,
-    PromptStyleSchema,
     TextToImageRequestSchema,
     ValidatedInferenceRequestSchema,
 } from './schemas'
 
-export type PromptStyle = z.infer<typeof PromptStyleSchema>
+export type PromptStyle = (typeof ALL_STYLES)[number]
+
 export type BaseInferenceRequest = z.infer<typeof BaseInferenceRequestSchema>
-export type TextToImageRequest = z.infer<typeof TextToImageRequestSchema>
-export type ImageToImageRequest = z.infer<typeof ImageToImageRequestSchema>
+
+export type TextToImageRequest = Omit<z.infer<typeof TextToImageRequestSchema>, 'prompt_style'> & {
+    prompt_style?: PromptStyle
+}
+
+export type ImageToImageRequest = Omit<
+    z.infer<typeof ImageToImageRequestSchema>,
+    'prompt_style'
+> & {
+    prompt_style?: PromptStyle
+}
+
 export type AnimationRequest = z.infer<typeof AnimationRequestSchema>
-export type InferenceRequest = z.infer<typeof InferenceRequestSchema>
+
+export type InferenceRequest = TextToImageRequest | ImageToImageRequest | AnimationRequest
+
 export type InferenceResponse = z.infer<typeof InferenceResponseSchema>
+
 export type ValidatedInferenceRequest = z.infer<typeof ValidatedInferenceRequestSchema>
+
+export type ParsedInferenceRequest = z.infer<typeof InferenceRequestSchema> & InferenceRequest
 
 export interface GeneratedImage {
     base64: string

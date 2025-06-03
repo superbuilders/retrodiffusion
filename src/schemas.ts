@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { ALL_STYLES, RD_FAST_STYLES, RD_PLUS_STYLES, SUPPORTED_RESOLUTIONS } from './constants'
 
 // Base schemas
-export const PromptStyleSchema = z.enum(ALL_STYLES as unknown as [string, ...string[]])
+export const PromptStyleSchema = z.enum([...ALL_STYLES] as [string, ...string[]])
 
 export const ClientConfigSchema = z.object({
     apiKey: z.string().min(1, 'API key is required'),

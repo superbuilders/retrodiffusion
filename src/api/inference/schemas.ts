@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { ApiResponseSchema, base64Schema } from '../common/schemas'
 
-export const PromptStyleSchema = z.enum(ALL_STYLES as unknown as [string, ...string[]])
+export const PromptStyleSchema = z.enum([...ALL_STYLES] as [string, ...string[]])
 
 export const BaseInferenceRequestSchema = z.object({
     prompt: z.string().min(1, 'Prompt is required and cannot be empty'),

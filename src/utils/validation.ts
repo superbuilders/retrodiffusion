@@ -29,7 +29,7 @@ export function validateDimensions(width: number, height: number, isAnimation = 
  */
 export function validatePromptStyle(style: string): PromptStyle {
     try {
-        return PromptStyleSchema.parse(style)
+        return PromptStyleSchema.parse(style) as PromptStyle
     } catch (error) {
         if (error instanceof ZodError) {
             const issue = error.issues[0] || { message: 'Invalid prompt style' }
@@ -93,7 +93,7 @@ export function safeValidateInferenceRequest(request: unknown) {
  */
 export function parseInferenceRequest(request: unknown): InferenceRequest {
     try {
-        return InferenceRequestSchema.parse(request)
+        return InferenceRequestSchema.parse(request) as InferenceRequest
     } catch (error) {
         if (error instanceof ZodError) {
             const issue = error.issues[0] || { message: 'Validation failed', path: [] }
