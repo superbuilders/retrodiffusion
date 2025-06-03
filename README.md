@@ -1,4 +1,4 @@
-# retrodiffusion-sdk
+# @superbuilders/retrodiffusion
 
 An unofficial TypeScript/JavaScript SDK client for the [Retro Diffusion API](https://www.retrodiffusion.ai/) - Generate pixel art and retro-style images with AI.
 
