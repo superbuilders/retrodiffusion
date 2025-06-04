@@ -1,6 +1,6 @@
 {
     "name": "@superbuilders/retrodiffusion",
-    "version": "0.1.0-beta.5",
+    "version": "0.1.0-beta.7",
     "description": "An unofficial TypeScript SDK for the Retrodiffusion API",
     "keywords": [
         "ai",
@@ -11,13 +11,13 @@
         "typescript",
         "retrodiffusion"
     ],
-    "homepage": "https://github.com/superbuilders/retrodiffusion-sdk#readme",
+    "homepage": "https://github.com/superbuilders/retrodiffusion#readme",
     "bugs": {
-        "url": "https://github.com/superbuilders/retrodiffusion-sdk/issues"
+        "url": "https://github.com/superbuilders/retrodiffusion/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/superbuilders/retrodiffusion-sdk.git"
+        "url": "git+https://github.com/superbuilders/retrodiffusion.git"
     },
     "license": "MIT",
     "author": "SuperBuilders",

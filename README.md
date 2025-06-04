@@ -1,5 +1,9 @@
 # @superbuilders/retrodiffusion
 
+<div>
+  <img src="retrodiffusion.png" alt="Retro Diffusion SDK" width="500" height="500" />
+</div>
+
 An unofficial TypeScript/JavaScript SDK client for the [Retro Diffusion API](https://www.retrodiffusion.ai/) - Generate pixel art and retro-style images with AI.
 
 ## Installation
