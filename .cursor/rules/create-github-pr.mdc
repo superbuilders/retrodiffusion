@@ -1,0 +1,54 @@
+---
+description: When creating a GitHub Pull Request (PR), adhere to these guidelines
+globs: 
+alwaysApply: false
+---
+# Creating GitHub Pull Requests Guide
+
+**IMPORTANT PREVIEW STEP:** Before using any tools to create the Pull Request on GitHub, you MUST first show a complete Markdown preview of the PR (Title and Body) to the user. Ask for their confirmation before proceeding.
+
+This guide outlines the process for creating GitHub Pull Requests (PRs).
+
+**Key PR Details:**
+
+*   **Repository:** All PRs should be made against `https://github.com/superbuilders/retrodiffusion`.
+*   **Head Branch:** This is your current working branch (the feature branch).
+    *   **Action:** Use your available tools (e.g., terminal/bash access like `git branch --show-current`) to determine the current branch name. *Do not ask the user for the head branch.*
+*   **Base Branch (Target):** This will ALMOST ALWAYS be `dev`.
+    *   **Note:** If `dev` seems incorrect for the specific context of your changes, you may ask the user for clarification on the *base branch only* after you have determined the head branch.
+*   **Issue Number(s):** The issue(s) this PR closes or addresses.
+    *   **Action:** Ask the user if there are any relevant issue numbers. This is optional for the user to provide, but you should always inquire. If provided, these will be linked in the PR body (see "Link Issues" below).
+
+**PR Formatting Guidelines:**
+
+1.  **Title:** Create a concise, descriptive title summarizing the PR's main purpose.
+
+    *Example title:*
+    ```
+    Refactor Game Loading with Manifest File
+    ```
+
+2.  **Body Structure:** The PR body MUST be structured with the following two components, both of which are required:
+    *   `This PR:` (Required) A bulleted list detailing the specific changes made.
+    *   `Notes:` (Required) Additional context, important considerations, or references to related work.
+
+    *Example body:*
+    ```
+    This PR:
+    - Refactors game loading to use a cademy.manifest.json file fetched from the CDN instead of database fields (scriptPath, stylesheetPath).
+    - Updates the games database schema (@playcademy/data) to remove deprecated path fields and adds assetBundleBase to store the absolute asset URL.
+    - Introduces ManifestV1Schema and ManifestV1 type in @playcademy/data for manifest validation.
+    - Modifies the SDK client (@playcademy/sdk) client.games.fetch method to fetch the manifest and return a combined GameWithManifest type.
+    - Updates the game loader (apps/cademy/src/lib/loader/*) to use GameWithManifest and manifest properties (bootMode, entryPoint, styles) for reliable booting logic.
+
+    Notes:
+    - Resolves the fragility and ambiguity issues identified in issue #10 regarding boot mode determination and asset path handling.
+    - The Vite plugin provides a more ergonomic way for developers to manage manifest generation compared to manual creation.
+    ```
+
+3.  **Link Issues:** Explicitly link the issue(s) the PR closes using keywords like `Closes #issue_number` or `Fixes #issue_number` on a separate line at the end of the body.
+
+    *Example (at end of body):*
+    ```
+    Closes #2
+    ```

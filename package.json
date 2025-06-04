@@ -1,15 +1,59 @@
 {
     "name": "@superbuilders/retrodiffusion",
-    "private": true,
+    "version": "0.1.0-beta.7",
+    "description": "An unofficial TypeScript SDK for the Retrodiffusion API",
+    "keywords": [
+        "ai",
+        "image-generation",
+        "diffusion",
+        "api",
+        "sdk",
+        "typescript",
+        "retrodiffusion"
+    ],
+    "homepage": "https://github.com/superbuilders/retrodiffusion#readme",
+    "bugs": {
+        "url": "https://github.com/superbuilders/retrodiffusion/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/superbuilders/retrodiffusion.git"
+    },
+    "license": "MIT",
+    "author": "SuperBuilders",
     "type": "module",
-    "module": "src/index.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
+        },
+        "./types": {
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "README.md"
+    ],
     "scripts": {
         "build": "bun run clean && bun run types && bun build src/index.ts --outdir dist --target node",
+        "bump": "SKIP_TESTS=1 bunx bumpp --no-tag --no-push",
         "clean": "bunx rimraf dist",
+        "coverage": "bun test --coverage",
         "format": "prettier --write .",
         "prepare": "husky",
+        "pub": "bun run build && bun run sort && bun run bump && bun publish --access public",
         "sort": "bunx sort-package-json",
-        "types": "tsc --emitDeclarationOnly --declaration --outDir dist"
+        "test": "bun test",
+        "test:watch": "bun test --watch",
+        "types": "tsc --emitDeclarationOnly --declaration --outDir dist --project tsconfig.types.json"
+    },
+    "dependencies": {
+        "zod": "^3.25.49"
     },
     "devDependencies": {
         "@eslint/js": "^9.28.0",

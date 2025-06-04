@@ -1,6 +1,18 @@
+bun run sort
+
 bun install --frozen-lockfile || {
   echo "❌ bun.lock is out of sync. Please run 'bun install' and commit the changes."
   exit 1
 }
+
+# Skip tests if SKIP_TESTS is set (used by bumpp for release commits)
+if [ "$SKIP_TESTS" = "1" ]; then
+  echo "⏭️  Skipping tests (SKIP_TESTS=1)"
+else
+  bun run test || {
+    echo "❌ Unit tests failed. Please fix failing tests before committing."
+    exit 1
+  }
+fi
 
 bun lint-staged

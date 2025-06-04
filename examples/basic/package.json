@@ -1,0 +1,21 @@
+{
+    "name": "retrodiffusion-basic-example",
+    "version": "1.0.0",
+    "description": "Basic HTML example for Retro Diffusion SDK",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "bun --watch index.ts",
+        "start": "bun run index.ts"
+    },
+    "dependencies": {
+        "@superbuilders/retrodiffusion": "file:../.."
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    }
+}

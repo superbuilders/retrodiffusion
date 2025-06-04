@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pixel Art Generator</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            dark: '#0a0a0a',
+                            darker: '#050505',
+                            muted: '#404040',
+                            border: '#202020',
+                        },
+                    },
+                },
+            }
+        </script>
+        <script type="importmap">
+            {
+                "imports": {
+                    "@superbuilders/retrodiffusion": "../../dist/index.js"
+                }
+            }
+        </script>
+    </head>
+    <body class="bg-darker text-white min-h-screen font-mono flex items-center">
+        <div class="container mx-auto px-4 py-8 max-w-2xl w-full">
+            <header class="mb-12">
+                <h1 class="text-2xl font-bold text-white mb-2">Pixel Art Generator</h1>
+                <p class="text-gray-400 text-sm">Powered by Retro Diffusion SDK</p>
+            </header>
+
+            <div class="bg-dark border border-border rounded p-6 mb-6">
+                <!-- Tabs -->
+                <div class="flex mb-6">
+                    <button
+                        id="rdFastTab"
+                        class="px-4 py-2 text-sm font-medium border-b-2 border-white text-white mr-4 transition-colors"
+                    >
+                        RD_FAST
+                    </button>
+                    <button
+                        id="rdPlusTab"
+                        class="px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-400 hover:text-white transition-colors"
+                    >
+                        RD_PLUS
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label for="prompt" class="block text-sm text-gray-300 mb-2">Prompt</label>
+                        <input
+                            type="text"
+                            id="prompt"
+                            placeholder="health potion with red liquid"
+                            class="w-full px-3 py-2 bg-darker border border-border rounded text-white placeholder-gray-500 focus:outline-none focus:border-gray-400"
+                        />
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="style" class="block text-sm text-gray-300 mb-2"
+                                >Style</label
+                            >
+                            <select
+                                id="style"
+                                class="w-full px-3 py-2 bg-darker border border-border rounded text-white focus:outline-none focus:border-gray-400"
+                            >
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="size" class="block text-sm text-gray-300 mb-2">Size</label>
+                            <select
+                                id="size"
+                                class="w-full px-3 py-2 bg-darker border border-border rounded text-white focus:outline-none focus:border-gray-400"
+                            >
+                                <option value="64">64×64</option>
+                                <option value="128">128×128</option>
+                                <option value="256">256×256</option>
+                                <option value="512">512×512</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="apiKey" class="block text-sm text-gray-300 mb-2">API Key</label>
+                        <input
+                            type="password"
+                            id="apiKey"
+                            placeholder="Your RD_TOKEN"
+                            class="w-full px-3 py-2 bg-darker border border-border rounded text-white placeholder-gray-500 focus:outline-none focus:border-gray-400"
+                        />
+                        <p class="text-xs text-gray-500 mt-1">Get your key at retrodiffusion.ai</p>
+                    </div>
+
+                    <button
+                        id="generateBtn"
+                        class="w-full bg-white text-black font-medium py-2 px-4 rounded hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Generate
+                    </button>
+                </div>
+            </div>
+
+            <div id="result" class="bg-dark border border-border rounded p-6 hidden">
+                <h3 class="text-sm text-gray-300 mb-4">Result</h3>
+                <div id="imageContainer" class="mb-4">
+                    <!-- Generated image will appear here -->
+                </div>
+                <div id="imageInfo" class="text-xs text-gray-500 space-y-1">
+                    <!-- Image info will appear here -->
+                </div>
+            </div>
+
+            <div
+                id="error"
+                class="bg-red-900/20 border border-red-800 rounded p-4 text-red-200 hidden"
+            >
+                <h3 class="text-sm font-medium mb-2">Error</h3>
+                <p id="errorMessage" class="text-sm"></p>
+            </div>
+        </div>
+
+        <script type="module">
+            import { RetroDiffusionClient } from '@superbuilders/retrodiffusion'
+
+            // Style definitions
+            const RD_FAST_STYLES = [
+                { value: 'rd_fast__default', label: 'Default' },
+                { value: 'rd_fast__retro', label: 'Retro' },
+                { value: 'rd_fast__simple', label: 'Simple' },
+                { value: 'rd_fast__detailed', label: 'Detailed' },
+                { value: 'rd_fast__anime', label: 'Anime' },
+                { value: 'rd_fast__game_asset', label: 'Game Asset' },
+                { value: 'rd_fast__portrait', label: 'Portrait' },
+                { value: 'rd_fast__texture', label: 'Texture' },
+                { value: 'rd_fast__ui', label: 'UI' },
+                { value: 'rd_fast__item_sheet', label: 'Item Sheet' },
+                { value: 'rd_fast__mc_texture', label: 'MC Texture' },
+                { value: 'rd_fast__mc_item', label: 'MC Item' },
+                { value: 'rd_fast__character_turnaround', label: 'Character Turnaround' },
+                { value: 'rd_fast__1_bit', label: '1-bit' },
+                { value: 'rd_fast__no_style', label: 'No Style' },
+            ]
+
+            const RD_PLUS_STYLES = [
+                { value: 'rd_plus__default', label: 'Default' },
+                { value: 'rd_plus__retro', label: 'Retro' },
+                { value: 'rd_plus__watercolor', label: 'Watercolor' },
+                { value: 'rd_plus__textured', label: 'Textured' },
+                { value: 'rd_plus__cartoon', label: 'Cartoon' },
+                { value: 'rd_plus__ui_element', label: 'UI Element' },
+                { value: 'rd_plus__item_sheet', label: 'Item Sheet' },
+                { value: 'rd_plus__character_turnaround', label: 'Character Turnaround' },
+                { value: 'rd_plus__topdown_map', label: 'Top-down Map' },
+                { value: 'rd_plus__topdown_asset', label: 'Top-down Asset' },
+                { value: 'rd_plus__isometric', label: 'Isometric' },
+                { value: 'rd_plus__isometric_asset', label: 'Isometric Asset' },
+            ]
+
+            // DOM elements
+            const promptInput = document.getElementById('prompt')
+            const styleSelect = document.getElementById('style')
+            const sizeSelect = document.getElementById('size')
+            const apiKeyInput = document.getElementById('apiKey')
+            const generateBtn = document.getElementById('generateBtn')
+            const resultDiv = document.getElementById('result')
+            const imageContainer = document.getElementById('imageContainer')
+            const imageInfo = document.getElementById('imageInfo')
+            const errorDiv = document.getElementById('error')
+            const errorMessage = document.getElementById('errorMessage')
+            const rdFastTab = document.getElementById('rdFastTab')
+            const rdPlusTab = document.getElementById('rdPlusTab')
+
+            // State
+            let currentModel = 'rd_fast'
+
+            // Tab functionality
+            function switchTab(model) {
+                currentModel = model
+
+                // Update tab appearance
+                if (model === 'rd_fast') {
+                    rdFastTab.classList.add('border-white', 'text-white')
+                    rdFastTab.classList.remove('border-transparent', 'text-gray-400')
+                    rdPlusTab.classList.add('border-transparent', 'text-gray-400')
+                    rdPlusTab.classList.remove('border-white', 'text-white')
+                    populateStyles(RD_FAST_STYLES)
+                } else {
+                    rdPlusTab.classList.add('border-white', 'text-white')
+                    rdPlusTab.classList.remove('border-transparent', 'text-gray-400')
+                    rdFastTab.classList.add('border-transparent', 'text-gray-400')
+                    rdFastTab.classList.remove('border-white', 'text-white')
+                    populateStyles(RD_PLUS_STYLES)
+                }
+            }
+
+            function populateStyles(styles) {
+                styleSelect.innerHTML = ''
+                styles.forEach(style => {
+                    const option = document.createElement('option')
+                    option.value = style.value
+                    option.textContent = style.label
+                    styleSelect.appendChild(option)
+                })
+            }
+
+            // Event listeners
+            rdFastTab.addEventListener('click', () => switchTab('rd_fast'))
+            rdPlusTab.addEventListener('click', () => switchTab('rd_plus'))
+
+            function showError(message) {
+                errorMessage.textContent = message
+                errorDiv.classList.remove('hidden')
+                resultDiv.classList.add('hidden')
+            }
+
+            function hideError() {
+                errorDiv.classList.add('hidden')
+            }
+
+            function showLoading() {
+                generateBtn.disabled = true
+                generateBtn.textContent = 'Generating...'
+            }
+
+            function hideLoading() {
+                generateBtn.disabled = false
+                generateBtn.textContent = 'Generate'
+            }
+
+            generateBtn.addEventListener('click', async () => {
+                try {
+                    hideError()
+                    showLoading()
+
+                    const prompt = promptInput.value.trim()
+                    const style = styleSelect.value
+                    const size = parseInt(sizeSelect.value)
+                    const apiKey = apiKeyInput.value.trim()
+
+                    if (!prompt) {
+                        throw new Error('Please enter a prompt')
+                    }
+
+                    if (!apiKey) {
+                        throw new Error('Please enter your API key')
+                    }
+
+                    const client = new RetroDiffusionClient({ apiKey })
+
+                    const result = await client.inference.textToImage({
+                        prompt: prompt,
+                        prompt_style: style,
+                        width: size,
+                        height: size,
+                        num_images: 1,
+                    })
+
+                    // Display the image
+                    imageContainer.innerHTML = `
+                    <img src="data:image/png;base64,${result.base64_images[0]}" 
+                         alt="Generated asset" 
+                         class="max-w-full rounded border border-border" />
+                `
+
+                    // Display info
+                    imageInfo.innerHTML = `
+                    <div>Credits used: ${result.credit_cost}</div>
+                    <div>Remaining: ${result.remaining_credits}</div>
+                    <div>Model: ${result.model}</div>
+                    <div>Generated: ${new Date(result.created_at).toLocaleTimeString()}</div>
+                `
+
+                    resultDiv.classList.remove('hidden')
+                } catch (error) {
+                    console.error('Error:', error)
+                    showError(error.message || 'Failed to generate asset')
+                } finally {
+                    hideLoading()
+                }
+            })
+
+            // Load saved API key
+            window.addEventListener('load', async () => {
+                // Initialize with RD_FAST
+                switchTab('rd_fast')
+
+                const savedApiKey = localStorage.getItem('rd_api_key')
+                if (savedApiKey) {
+                    apiKeyInput.value = savedApiKey
+
+                    try {
+                        const client = new RetroDiffusionClient({ apiKey: savedApiKey })
+                        const credits = await client.credits.get()
+                        console.log('Available credits:', credits.credits)
+                    } catch (error) {
+                        console.log('Could not fetch credits:', error.message)
+                    }
+                }
+            })
+
+            // Save API key
+            apiKeyInput.addEventListener('blur', () => {
+                const apiKey = apiKeyInput.value.trim()
+                if (apiKey) {
+                    localStorage.setItem('rd_api_key', apiKey)
+                }
+            })
+        </script>
+    </body>
+</html>
