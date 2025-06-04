@@ -1,6 +1,6 @@
 {
     "name": "@superbuilders/retrodiffusion",
-    "version": "0.1.0-beta.6",
+    "version": "0.1.0-beta.7",
     "description": "An unofficial TypeScript SDK for the Retrodiffusion API",
     "keywords": [
         "ai",
